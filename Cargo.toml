@@ -1,0 +1,33 @@
+[workspace]
+members = [
+    "app-bevy",
+    "lib-utils",
+]
+resolver = "2" # wgpu/bevy need this
+
+[workspace.package]
+version = "0.14.0"
+edition = "2021"
+
+[workspace.dependencies]
+bevy = { version = "0.14.0", features = ["dynamic_linking", "wayland"] }
+log = { version = "*", features = ["max_level_debug", "release_max_level_warn"] }
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+lto = "thin"
+
+[profile.wasm-release]
+inherits = "release"
+opt-level = "s"
+lto = "thin"
+strip = "debuginfo"
+
+[workspace.metadata.rust-analyzer]
+rustc_private = true
